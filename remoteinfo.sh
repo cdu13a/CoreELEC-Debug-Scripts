@@ -136,6 +136,13 @@ if [ -d /storage/.kodi/userdata/keymaps ]; then
 else
     printf " Directory Missing!\n" >> $OUTPUTFILE
 fi
+    printf "------------ /storage/.config/autostart.sh ------------" >> $OUTPUTFILE
+if [ -f /storage/.config/autostart.sh ]; then
+    printf "\n" >> $OUTPUTFILE
+    cat /storage/.config/autostart.sh >> $OUTPUTFILE
+else
+    printf " Unset by user!\n" >> $OUTPUTFILE
+fi
 
 if [ "$1" = "-l" ]; then                                                                   
   cat $OUTPUTFILE                                                       
