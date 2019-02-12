@@ -108,7 +108,8 @@ fi
     printf "------------ relevant kodi settings ------------" >> $OUTPUTFILE
 if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
     printf "\n" >> $OUTPUTFILE
-    for tag in "coreelec.amlogic.autocdsw" \
+    for tag in "coreelec.amlogic.limit8bit" \
+               "coreelec.amlogic.force422" \
                "coreelec.amlogic.deinterlacing" \
                "coreelec.amlogic.noisereduction" \
                "videoplayer.adjustrefreshrate" \
