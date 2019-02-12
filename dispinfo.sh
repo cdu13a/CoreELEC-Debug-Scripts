@@ -27,6 +27,14 @@ if [ -f /proc/device-tree/le-dt-id ]; then
 else
     printf " Unset by user!\n" >> $OUTPUTFILE
 fi
+    printf "------------ /proc/cmdline ------------" >> $OUTPUTFILE
+if [ -f /proc/cmdline ]; then
+    printf "\n" >> $OUTPUTFILE
+    cat /proc/cmdline >> $OUTPUTFILE
+    printf "\n" >> $OUTPUTFILE
+else
+    printf " Unset by user!\n" >> $OUTPUTFILE
+fi
     printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/edid ------------" >> $OUTPUTFILE
 if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/edid ]; then
     printf "\n" >> $OUTPUTFILE
