@@ -19,13 +19,21 @@ if [ -f /etc/os-release ]; then
 else
     printf " Unset by user!\n" >> $OUTPUTFILE
 fi
+    printf "------------ /proc/device-tree/coreelec-dt-id ------------" >> $OUTPUTFILE
+if [ -f /proc/device-tree/coreelec-dt-id ]; then
+    printf "\n" >> $OUTPUTFILE
+    cat /proc/device-tree/coreelec-dt-id >> $OUTPUTFILE
+    printf "\n" >> $OUTPUTFILE
+else
+    printf " Missing!\n" >> $OUTPUTFILE
+fi
     printf "------------ /proc/device-tree/le-dt-id ------------" >> $OUTPUTFILE
 if [ -f /proc/device-tree/le-dt-id ]; then
     printf "\n" >> $OUTPUTFILE
     cat /proc/device-tree/le-dt-id >> $OUTPUTFILE
     printf "\n" >> $OUTPUTFILE
 else
-    printf " Unset by user!\n" >> $OUTPUTFILE
+    printf " Missing!\n" >> $OUTPUTFILE
 fi
     printf "------------ /proc/device-tree/meson-ir/status ------------" >> $OUTPUTFILE
 if [ -f /proc/device-tree/meson-ir/status ]; then
