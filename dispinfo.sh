@@ -106,6 +106,20 @@ if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/hdr_cap ]; then
 else
     printf " Missing!\n" >> $OUTPUTFILE
 fi
+    printf "------------ /sys/module/am_vecm/parameters/hdr_mode ------------" >> $OUTPUTFILE
+if [ -f /sys/module/am_vecm/parameters/hdr_mode ]; then
+    printf "\n" >> $OUTPUTFILE
+    cat /sys/module/am_vecm/parameters/hdr_mode >> $OUTPUTFILE
+else
+    printf " Missing!\n" >> $OUTPUTFILE
+fi
+    printf "------------ /sys/module/am_vecm/parameters/sdr_mode ------------" >> $OUTPUTFILE
+if [ -f /sys/module/am_vecm/parameters/sdr_mode ]; then
+    printf "\n" >> $OUTPUTFILE
+    cat /sys/module/am_vecm/parameters/sdr_mode >> $OUTPUTFILE
+else
+    printf " Missing!\n" >> $OUTPUTFILE
+fi
     printf "------------ /sys/class/display/vinfo ------------" >> $OUTPUTFILE
 if [ -f /sys/class/display/vinfo ]; then
     printf "\n" >> $OUTPUTFILE
@@ -120,6 +134,8 @@ if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
                "coreelec.amlogic.force422" \
                "coreelec.amlogic.deinterlacing" \
                "coreelec.amlogic.noisereduction" \
+               "coreelec.amlogic.hdr2sdr" \
+               "coreelec.amlogic.sdr2hdr" \
                "videoplayer.adjustrefreshrate" \
                "videoplayer.useamcodec" \
                "videoplayer.useamcodech264" \
