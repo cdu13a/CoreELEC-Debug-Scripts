@@ -6,79 +6,87 @@
 # Collect amlogic display information
 #
 #####################################################
-
+#
+# Comand Line Arguments
+# -l = Show local only
+# -r = Remove stuff that is redundent between debug scripts, and show local only
+#
+#####################################################
 
 OUTPUTFILE="/storage/audinfo.txt"
 
-printf "CoreELEC audio information...\n\n" > $OUTPUTFILE
+fancycat()
+{
+# $1 = file $2 = message if file not found
+    printf "------------ $1 ------------" >> $OUTPUTFILE
+    if [ -f $1 ]; then
+        printf "\n" >> $OUTPUTFILE
+        cat $1 | tr '\000' '\n' >> $OUTPUTFILE
+    else
+        printf " $2\n" >> $OUTPUTFILE
+    fi
 
-    printf "------------ /etc/os-release ------------" >> $OUTPUTFILE
-if [ -f /etc/os-release ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /etc/os-release >> $OUTPUTFILE
+}
+
+fancychk()
+{
+   printf "------------ $1 ------------" >> $OUTPUTFILE
+    if [ -f $1 ]; then
+        printf " Set by user!\n" >> $OUTPUTFILE
+    else
+        printf " Unset by user!\n" >> $OUTPUTFILE
+    fi
+
+}
+
+fancycatdir()
+{
+if [ -d $1 ]; then
+    printf "------------ $1 ------------\n" >> $OUTPUTFILE
+    for filename in $1/$2
+    do
+        [ -e $filename ] || continue
+        if [ -f $filename ]; then
+            fancycat $filename
+        fi
+    done
 else
-    printf " Unset by user!\n" >> $OUTPUTFILE
+    printf " Directory Missing!\n"
 fi
-    printf "------------ /proc/device-tree/coreelec-dt-id ------------" >> $OUTPUTFILE
-if [ -f /proc/device-tree/coreelec-dt-id ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /proc/device-tree/coreelec-dt-id >> $OUTPUTFILE
-    printf "\n" >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
+
+}
+
+
+printf "CoreELEC Audio Information...\n\n" > $OUTPUTFILE
+
+if [ "$1" != "-r" ]; then 
+    fancycat "/etc/os-release" "Missing!"
+    fancycat "/proc/device-tree/coreelec-dt-id" "Missing!"
+    fancycat "/proc/device-tree/le-dt-id" "Missing!"
+    fancycat "/proc/cmdline" "Missing!"
 fi
-    printf "------------ /proc/device-tree/le-dt-id ------------" >> $OUTPUTFILE
-if [ -f /proc/device-tree/le-dt-id ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /proc/device-tree/le-dt-id >> $OUTPUTFILE
-    printf "\n" >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /proc/cmdline ------------" >> $OUTPUTFILE
-if [ -f /proc/cmdline ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /proc/cmdline >> $OUTPUTFILE
-    printf "\n" >> $OUTPUTFILE
-else
-    printf " Unset by user!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/rawedid ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/rawedid ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/rawedid >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/config ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/config ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/config >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/aud_cap ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/aud_cap ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/aud_cap >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/rawedid" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/config" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/aud_cap" "Missing!"
+
     printf "------------ /sys/class/sound ------------" >> $OUTPUTFILE
 if [ -d /sys/class/sound ]; then
-    printf "\n" >> $OUTPUTFILE
-    ls /sys/class/sound >> $OUTPUTFILE
+    for soundcard in `ls -d /sys/class/sound/card*`
+        do
+            if [ -f $soundcard'/id' ]; then
+                printf "\n" >> $OUTPUTFILE
+                cat $soundcard'/id' >> $OUTPUTFILE
+                for subsystem in `ls -d $soundcard'/subsystem/'*`
+                    do
+                        printf "$subsystem" | awk -F'/' '{print "|-"$NF}' >> $OUTPUTFILE
+                    done
+            fi
+        done
 else
     printf " Missing!\n" >> $OUTPUTFILE
 fi
-    printf "------------ relevant kodi settings ------------" >> $OUTPUTFILE
+    printf "------------ kodi audio settings ------------" >> $OUTPUTFILE
 if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
     printf "\n" >> $OUTPUTFILE
     for tag in "accessibility.audiohearing" \
@@ -113,45 +121,31 @@ if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
                "musicplayer.seeksteps"
     do
         printf "$tag: " >> $OUTPUTFILE
-        cat /storage/.kodi/userdata/guisettings.xml |grep \""$tag"\" |grep -o '>.*<' |sed -E 's/[<>]//g' >> $OUTPUTFILE
+        value=$(cat /storage/.kodi/userdata/guisettings.xml |grep "\"$tag\"" |grep -o '>.*<' |sed -E 's/[<>]//g')
+        [ -n "$value" ] && printf "$value" >> $OUTPUTFILE
+        printf "\n" >> $OUTPUTFILE
     done
     printf "mute: " >> $OUTPUTFILE
-    cat /storage/.kodi/userdata/guisettings.xml |grep mute |grep -o '>.*<' |sed -E 's/[<>]//g' >> $OUTPUTFILE
+    value=$(cat /storage/.kodi/userdata/guisettings.xml |awk -F '[<>]' '/mute/ {print $3}')
+    [ -n "$value" ] && printf "$value" >> $OUTPUTFILE
+    printf "\n" >> $OUTPUTFILE
     printf "volumelevel: " >> $OUTPUTFILE
-    cat /storage/.kodi/userdata/guisettings.xml |grep fvolumelevel |grep -o '>.*<' |sed -E 's/[<>]//g' >> $OUTPUTFILE
+    value=$(cat /storage/.kodi/userdata/guisettings.xml |awk -F '[<>]' '/fvolumelevel/ {print $3}')
+    [ -n "$value" ] && printf "$value" >> $OUTPUTFILE
+    printf "\n" >> $OUTPUTFILE
 else
     printf " Missing!\n" >> $OUTPUTFILE
 fi
-    printf "------------ /storage/.config/sound.conf ------------" >> $OUTPUTFILE
-if [ -f /storage/.config/sound.conf ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /storage/.config/sound.conf >> $OUTPUTFILE
-else
-    printf " Unset by user!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /storage/.config/asound.conf ------------" >> $OUTPUTFILE
-if [ -f /storage/.config/asound.conf ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /storage/.config/asound.conf >> $OUTPUTFILE
-else
-    printf " Unset by user!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /storage/.config/pulse-daemon.conf.d ------------" >> $OUTPUTFILE
-if [ -d /storage/.config/pulse-daemon.conf.d ]; then
-    printf "\n" >> $OUTPUTFILE
-    ls /storage/.config/pulse-daemon.conf.d >> $OUTPUTFILE
-else
-    printf " Unset by user!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /storage/.config/autostart.sh ------------" >> $OUTPUTFILE
-if [ -f /storage/.config/autostart.sh ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /storage/.config/autostart.sh >> $OUTPUTFILE
-else
-    printf " Unset by user!\n" >> $OUTPUTFILE
+
+fancycat "/storage/.config/sound.conf" "Unset by user!"
+fancycat "/storage/.config/asound.conf" "Unset by user!"
+fancycatdir "/storage/.config/pulse-daemon.conf.d" "*.conf"
+
+if [ "$1" != "-r" ]; then 
+    fancycat "/storage/.config/autostart.sh" "Unset by user!"
 fi
 
-if [ "$1" = "-l" ]; then                                                                   
+if [ "$1" = "-l" ] || [ "$1" = "-r" ]; then                                                                   
   cat $OUTPUTFILE                                                       
 else                              
   paste $OUTPUTFILE                                                                

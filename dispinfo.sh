@@ -6,128 +6,79 @@
 # Collect amlogic display information
 #
 #####################################################
-
+#
+# Comand Line Arguments
+# -l = Show local only
+# -r = Remove stuff that is redundent between debug scripts, and show local only
+#
+#####################################################
 
 OUTPUTFILE="/storage/dispinfo.txt"
 
-printf "CoreELEC display information...\n\n" > $OUTPUTFILE
+fancycat()
+{
+# $1 = file $2 = message if file not found
+    printf "------------ $1 ------------" >> $OUTPUTFILE
+    if [ -f $1 ]; then
+        printf "\n" >> $OUTPUTFILE
+        cat $1 | tr '\000' '\n' >> $OUTPUTFILE
+    else
+        printf " $2\n" >> $OUTPUTFILE
+    fi
 
-    printf "------------ /etc/os-release ------------" >> $OUTPUTFILE
-if [ -f /etc/os-release ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /etc/os-release >> $OUTPUTFILE
+}
+
+fancychk()
+{
+   printf "------------ $1 ------------" >> $OUTPUTFILE
+    if [ -f $1 ]; then
+        printf " Set by user!\n" >> $OUTPUTFILE
+    else
+        printf " Unset by user!\n" >> $OUTPUTFILE
+    fi
+
+}
+
+fancycatdir()
+{
+if [ -d $1 ]; then
+    printf "------------ $1 ------------\n" >> $OUTPUTFILE
+    for filename in $1/$2
+    do
+        [ -e $filename ] || continue
+        if [ -f $filename ]; then
+            fancycat $filename
+        fi
+    done
 else
-    printf " Unset by user!\n" >> $OUTPUTFILE
+    printf " Directory Missing!\n"
 fi
-    printf "------------ /proc/device-tree/coreelec-dt-id ------------" >> $OUTPUTFILE
-if [ -f /proc/device-tree/coreelec-dt-id ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /proc/device-tree/coreelec-dt-id >> $OUTPUTFILE
-    printf "\n" >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
+
+}
+
+
+printf "CoreELEC Display Information...\n\n" > $OUTPUTFILE
+
+if [ "$1" != "-r" ]; then 
+    fancycat "/etc/os-release" "Missing!"
+    fancycat "/proc/device-tree/coreelec-dt-id" "Missing!"
+    fancycat "/proc/device-tree/le-dt-id" "Missing!"
+    fancycat "/proc/cmdline" "Missing!"
 fi
-    printf "------------ /proc/device-tree/le-dt-id ------------" >> $OUTPUTFILE
-if [ -f /proc/device-tree/le-dt-id ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /proc/device-tree/le-dt-id >> $OUTPUTFILE
-    printf "\n" >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /proc/cmdline ------------" >> $OUTPUTFILE
-if [ -f /proc/cmdline ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /proc/cmdline >> $OUTPUTFILE
-    printf "\n" >> $OUTPUTFILE
-else
-    printf " Unset by user!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/edid ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/edid ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/edid >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/rawedid ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/rawedid ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/rawedid >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/config ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/config ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/config >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/dc_cap ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/dc_cap ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/dc_cap >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/attr ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/attr ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/attr >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/disp_cap ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/disp_cap ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/disp_cap >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/preferred_mode ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/preferred_mode ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/preferred_mode >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/devices/virtual/amhdmitx/amhdmitx0/hdr_cap ------------" >> $OUTPUTFILE
-if [ -f /sys/devices/virtual/amhdmitx/amhdmitx0/hdr_cap ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/devices/virtual/amhdmitx/amhdmitx0/hdr_cap >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/module/am_vecm/parameters/hdr_mode ------------" >> $OUTPUTFILE
-if [ -f /sys/module/am_vecm/parameters/hdr_mode ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/module/am_vecm/parameters/hdr_mode >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/module/am_vecm/parameters/sdr_mode ------------" >> $OUTPUTFILE
-if [ -f /sys/module/am_vecm/parameters/sdr_mode ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/module/am_vecm/parameters/sdr_mode >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /sys/class/display/vinfo ------------" >> $OUTPUTFILE
-if [ -f /sys/class/display/vinfo ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /sys/class/display/vinfo >> $OUTPUTFILE
-else
-    printf " Missing!\n" >> $OUTPUTFILE
-fi
-    printf "------------ relevant kodi settings ------------" >> $OUTPUTFILE
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/rawedid" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/config" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/dc_cap" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/attr" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/disp_cap" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/preferred_mode" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/hdr_cap" "Missing!"
+fancycat "/sys/module/am_vecm/parameters/hdr_mode" "Missing!"
+fancycat "/sys/module/am_vecm/parameters/sdr_mode" "Missing!"
+fancycat "/sys/class/display/vinfo" "Missing!"
+
+printf "------------ kodi display settings ------------" >> $OUTPUTFILE
 if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
     printf "\n" >> $OUTPUTFILE
     for tag in "coreelec.amlogic.limit8bit" \
@@ -146,27 +97,21 @@ if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
                "lookandfeel.skin" 
     do
         printf "$tag: " >> $OUTPUTFILE
-        cat /storage/.kodi/userdata/guisettings.xml |grep \""$tag"\" |grep -o '>.*<' |sed -E 's/[<>]//g' >> $OUTPUTFILE
+        value=$(cat /storage/.kodi/userdata/guisettings.xml |grep "\"$tag\"" |grep -o '>.*<' |sed -E 's/[<>]//g')
+        [ -n "$value" ] && printf "$value" >> $OUTPUTFILE
+        printf "\n" >> $OUTPUTFILE
     done
 else
     printf " Missing!\n" >> $OUTPUTFILE
 fi
-    printf "------------ /storage/.kodi/userdata/disp_cap ------------" >> $OUTPUTFILE
-if [ -f /storage/.kodi/userdata/disp_cap ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /storage/.kodi/userdata/disp_cap >> $OUTPUTFILE
-else
-    printf " Unset by user!\n" >> $OUTPUTFILE
-fi
-    printf "------------ /storage/.config/autostart.sh ------------" >> $OUTPUTFILE
-if [ -f /storage/.config/autostart.sh ]; then
-    printf "\n" >> $OUTPUTFILE
-    cat /storage/.config/autostart.sh >> $OUTPUTFILE
-else
-    printf " Unset by user!\n" >> $OUTPUTFILE
+
+
+fancycat "/storage/.kodi/userdata/disp_cap" "Unset by user!"
+if [ "$1" != "-r" ]; then 
+    fancycat "/storage/.config/autostart.sh" "Unset by user!"
 fi
 
-if [ "$1" = "-l" ]; then                                                                   
+if [ "$1" = "-l" ] || [ "$1" = "-r" ]; then                                                                   
   cat $OUTPUTFILE                                                       
 else                              
   paste $OUTPUTFILE                                                                
