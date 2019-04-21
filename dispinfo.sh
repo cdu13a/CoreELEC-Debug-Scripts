@@ -108,6 +108,8 @@ fi
 
 fancycat "/storage/.kodi/userdata/disp_cap" "Unset by user!"
 if [ "$1" != "-r" ]; then 
+    fancycat "/flash/boot.ini"  "Missing!"
+    fancycat "/flash/config.ini"  "Missing!"
     fancycat "/storage/.config/autostart.sh" "Unset by user!"
 fi
 

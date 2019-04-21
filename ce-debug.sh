@@ -62,6 +62,8 @@ fancycat "/etc/os-release" "Missing!"
 fancycat "/proc/device-tree/coreelec-dt-id" "Missing!"
 fancycat "/proc/device-tree/le-dt-id" "Missing!"
 fancycat "/proc/cmdline" "Missing!"
+fancycat "/flash/boot.ini"  "Missing!"
+fancycat "/flash/config.ini"  "Missing!"
 fancycat "/storage/.config/autostart.sh" "Unset by user!"
 
 printf "\n" >> $OUTPUTFILE

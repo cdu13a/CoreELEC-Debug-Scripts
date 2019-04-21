@@ -82,6 +82,8 @@ fancycat "/storage/.kodi/userdata/keyboard.xml"  "Unset by user!"
 fancycatdir "/storage/.kodi/userdata/keymaps" "*.xml"
 
 if [ "$1" != "-r" ]; then 
+    fancycat "/flash/boot.ini"  "Missing!"
+    fancycat "/flash/config.ini"  "Missing!"
     fancycat "/storage/.config/autostart.sh" "Unset by user!"
 fi
 
