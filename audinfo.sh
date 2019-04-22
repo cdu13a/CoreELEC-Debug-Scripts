@@ -77,15 +77,36 @@ if [ -d /sys/class/sound ]; then
             if [ -f $soundcard'/id' ]; then
                 printf "\n" >> $OUTPUTFILE
                 cat $soundcard'/id' >> $OUTPUTFILE
-                for subsystem in `ls -d $soundcard'/subsystem/'*`
+                cdnum=$(cat $soundcard'/number')
+                printf "|-card$cdnum\n" >> $OUTPUTFILE
+                for ccontrol in `ls -d /sys/class/sound/controlC$cdnum`
                     do
-                        printf "$subsystem" | awk -F'/' '{print "|-"$NF}' >> $OUTPUTFILE
+                        printf "$ccontrol" | awk -F'/' '{print "|-"$NF}' >> $OUTPUTFILE
+                    done
+                for cpcm in `ls -d /sys/class/sound/pcmC$cdnum*`
+                    do
+                        printf "$cpcm" | awk -F'/' '{print "|-"$NF}' >> $OUTPUTFILE
                     done
             fi
         done
 else
     printf " Missing!\n" >> $OUTPUTFILE
 fi
+
+fancycat "/proc/asound/cards" "Missing!"
+fancycat "/proc/asound/pcm" "Missing!"
+
+printf "------------ aplay ------------" >> $OUTPUTFILE
+if [ -x `which aplay` ]; then
+    printf "\n" >> $OUTPUTFILE
+    printf "------------ aplay -l ------------\n" >> $OUTPUTFILE
+    aplay -l >> $OUTPUTFILE
+    printf "------------ aplay -L ------------\n" >> $OUTPUTFILE
+    aplay -L >> $OUTPUTFILE
+else
+    printf " Missing!\n" >> $OUTPUTFILE
+fi
+
     printf "------------ kodi audio settings ------------" >> $OUTPUTFILE
 if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
     printf "\n" >> $OUTPUTFILE
