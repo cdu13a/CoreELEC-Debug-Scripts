@@ -25,7 +25,6 @@ fancycat()
     else
         printf " $2\n" >> $OUTPUTFILE
     fi
-
 }
 
 fancychk()
@@ -36,24 +35,42 @@ fancychk()
     else
         printf " Unset by user!\n" >> $OUTPUTFILE
     fi
-
 }
 
 fancycatdir()
 {
-if [ -d $1 ]; then
-    printf "------------ $1 ------------\n" >> $OUTPUTFILE
-    for filename in $1/$2
-    do
-        [ -e $filename ] || continue
-        if [ -f $filename ]; then
-            fancycat $filename
-        fi
-    done
-else
-    printf " Directory Missing!\n"
-fi
+# $1 = directory $2 = filename pattern $3 = message if file not found
+    printf "------------ $1 ------------" >> $OUTPUTFILE
+    if [ -d $1 ]; then
+        printf "\n" >> $OUTPUTFILE
+        for filename in $1/$2
+        do
+            [ -e $filename ] || continue
+            if [ -f $filename ]; then
+                fancycat $filename $3
+            fi
+        done
+    else
+        printf " Directory Missing!\n"
+    fi
+}
 
+wildcat()
+{
+# $1 = filename pattern $2 = message if file not found
+    printf "------------ $1 ------------" >> $OUTPUTFILE
+    if [ -e $1 ]; then
+        printf "\n" >> $OUTPUTFILE
+        for filename in $1
+        do
+            [ -e $filename ] || continue
+            if [ -f $filename ]; then
+                fancycat $filename $2
+            fi
+        done
+    else
+        printf " $2\n" >> $OUTPUTFILE
+    fi
 }
 
 
@@ -71,19 +88,19 @@ fancycat "/proc/device-tree/meson-remote/status" "Missing!"
 
 fancychk "/storage/.config/remote.disable"
 fancychk "/flash/remote.disable"
-fancycat "/storage/.config/remote.conf"  "Unset by user!"
-fancycat "/flash/remote.conf"  "Unset by user!"
-fancycat "/storage/.config/lircd.conf"  "Unset by user!"
-fancycat "/storage/.config/lirc_options.conf"  "Unset by user!"
-fancycat "/storage/.config/rc_maps.cfg"  "Unset by user!"
-fancycatdir "/storage/.config/rc_keymaps" "*"
-fancycat "/storage/.kodi/userdata/Lircmap.xml"  "Unset by user!"
-fancycat "/storage/.kodi/userdata/keyboard.xml"  "Unset by user!"
-fancycatdir "/storage/.kodi/userdata/keymaps" "*.xml"
+fancycat "/storage/.config/remote.conf" "Unset by user!"
+fancycat "/flash/remote.conf" "Unset by user!"
+fancycat "/storage/.config/lircd.conf" "Unset by user!"
+fancycat "/storage/.config/lirc_options.conf" "Unset by user!"
+fancycat "/storage/.config/rc_maps.cfg" "Unset by user!"
+fancycatdir "/storage/.config/rc_keymaps" "*" "Unset by user!"
+fancycat "/storage/.kodi/userdata/Lircmap.xml" "Unset by user!"
+fancycat "/storage/.kodi/userdata/keyboard.xml" "Unset by user!"
+fancycatdir "/storage/.kodi/userdata/keymaps" "*.xml" "Unset by user!"
 
 if [ "$1" != "-r" ]; then 
-    fancycat "/flash/boot.ini"  "Missing!"
-    fancycat "/flash/config.ini"  "Missing!"
+    fancycat "/flash/boot.ini" "Missing!"
+    fancycat "/flash/config.ini" "Missing!"
     fancycat "/storage/.config/autostart.sh" "Unset by user!"
 fi
 

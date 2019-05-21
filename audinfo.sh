@@ -25,7 +25,6 @@ fancycat()
     else
         printf " $2\n" >> $OUTPUTFILE
     fi
-
 }
 
 fancychk()
@@ -36,26 +35,43 @@ fancychk()
     else
         printf " Unset by user!\n" >> $OUTPUTFILE
     fi
-
 }
 
 fancycatdir()
 {
-if [ -d $1 ]; then
-    printf "------------ $1 ------------\n" >> $OUTPUTFILE
-    for filename in $1/$2
-    do
-        [ -e $filename ] || continue
-        if [ -f $filename ]; then
-            fancycat $filename
-        fi
-    done
-else
-    printf " Directory Missing!\n"
-fi
-
+# $1 = directory $2 = filename pattern $3 = message if file not found
+    printf "------------ $1 ------------" >> $OUTPUTFILE
+    if [ -d $1 ]; then
+        printf "\n" >> $OUTPUTFILE
+        for filename in $1/$2
+        do
+            [ -e $filename ] || continue
+            if [ -f $filename ]; then
+                fancycat $filename $3
+            fi
+        done
+    else
+        printf " Directory Missing!\n"
+    fi
 }
 
+wildcat()
+{
+# $1 = filename pattern $2 = message if file not found
+    printf "------------ $1 ------------" >> $OUTPUTFILE
+    if [ -e $1 ]; then
+        printf "\n" >> $OUTPUTFILE
+        for filename in $1
+        do
+            [ -e $filename ] || continue
+            if [ -f $filename ]; then
+                fancycat $filename $2
+            fi
+        done
+    else
+        printf " $2\n" >> $OUTPUTFILE
+    fi
+}
 
 printf "CoreELEC Audio Information...\n\n" > $OUTPUTFILE
 
@@ -161,7 +177,7 @@ fi
 
 fancycat "/storage/.config/sound.conf" "Unset by user!"
 fancycat "/storage/.config/asound.conf" "Unset by user!"
-fancycatdir "/storage/.config/pulse-daemon.conf.d" "*.conf"
+fancycatdir "/storage/.config/pulse-daemon.conf.d" "*.conf" "Unset by user!"
 
 if [ "$1" != "-r" ]; then 
     fancycat "/storage/.config/autostart.sh" "Unset by user!"
