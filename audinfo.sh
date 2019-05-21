@@ -65,6 +65,7 @@ if [ "$1" != "-r" ]; then
     fancycat "/proc/device-tree/le-dt-id" "Missing!"
     fancycat "/proc/cmdline" "Missing!"
 fi
+fancycat "/proc/device-tree/pinctrl@ff634480/spdifout/mux/groups" "Missing!"
 fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing" "Missing!"
 fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/rawedid" "Missing!"
 fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/config" "Missing!"
