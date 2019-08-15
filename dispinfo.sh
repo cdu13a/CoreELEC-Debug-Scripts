@@ -3,13 +3,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2018-present Team CoreELEC (https://coreelec.org)
 #
-# Collect amlogic display information
+# Collect CoreELEC display information
 #
 #####################################################
 #
 # Comand Line Arguments
 # -l = Show local only
-# -r = Remove stuff that is redundent between debug scripts, and show local only
+# -r = Remove items that are redundant between debug scripts, and show local only
 #
 #####################################################
 
@@ -72,6 +72,7 @@ wildcat()
         printf " $2\n" >> $OUTPUTFILE
     fi
 }
+
 
 printf "CoreELEC Display Information...\n\n" > $OUTPUTFILE
 

@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2018-present Team CoreELEC (https://coreelec.org)
 #
-# Collect remote control configuration information
+# Collect output from all CoreELEC Debug Scripts
 #
 #####################################################
 #
@@ -71,6 +71,7 @@ wildcat()
         printf " $2\n" >> $OUTPUTFILE
     fi
 }
+
 
 printf "CoreELEC Debug Information...\n\n" > $OUTPUTFILE
 
