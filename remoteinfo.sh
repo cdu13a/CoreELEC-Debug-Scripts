@@ -100,6 +100,9 @@ fancycat "/storage/.kodi/userdata/Lircmap.xml" "Unset by user!"
 fancycat "/storage/.kodi/userdata/keyboard.xml" "Unset by user!"
 fancycatdir "/storage/.kodi/userdata/keymaps" "*.xml" "Unset by user!"
 
+printf "------------ BL301 ------------\n" >> $OUTPUTFILE
+checkbl301 -v >> $OUTPUTFILE
+
 if [ "$1" != "-r" ]; then 
     fancycat "/flash/boot.ini" "Missing!"
     fancycat "/flash/config.ini" "Missing!"
