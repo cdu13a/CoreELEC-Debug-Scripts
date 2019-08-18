@@ -82,6 +82,15 @@ fancycat "/proc/cmdline" "Missing!"
 fancycat "/flash/boot.ini"  "Missing!"
 fancycat "/flash/config.ini"  "Missing!"
 fancycat "/storage/.config/autostart.sh" "Unset by user!"
+printf "\n" >> $OUTPUTFILE
+
+printf "------------ fw_printenv ------------\n" >> $OUTPUTFILE
+if [ -e /dev/env ]; then
+  fw_printenv >> $OUTPUTFILE
+  printf "\n" >> $OUTPUTFILE
+else
+  printf "Not found! || Not a TV Box?\n" >> $OUTPUTFILE
+fi
 
 printf "\n" >> $OUTPUTFILE
 if [ -x ./dispinfo.sh ]; then
