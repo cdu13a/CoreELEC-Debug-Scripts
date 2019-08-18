@@ -91,6 +91,12 @@ if [ -e /dev/env ]; then
 else
   printf "Not found! || Not a TV Box?\n" >> $OUTPUTFILE
 fi
+printf "\n" >> $OUTPUTFILE
+
+printf "------------ lsmod ------------\n" >> $OUTPUTFILE
+lsmod >> $OUTPUTFILE
+printf "------------ lsusb ------------\n" >> $OUTPUTFILE
+lsusb >> $OUTPUTFILE
 
 printf "\n" >> $OUTPUTFILE
 if [ -x ./dispinfo.sh ]; then
