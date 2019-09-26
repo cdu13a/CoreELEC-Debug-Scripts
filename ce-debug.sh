@@ -83,6 +83,8 @@ fancycat "/flash/boot.ini"  "Missing!"
 fancycat "/flash/config.ini"  "Missing!"
 fancycat "/storage/.config/autostart.sh" "Unset by user!"
 printf "\n" >> $OUTPUTFILE
+fancycat "/storage/init-previous.log" "Missing!"        
+printf "\n" >> $OUTPUTFILE
 
 printf "------------ fw_printenv ------------\n" >> $OUTPUTFILE
 if [ -e /dev/env ]; then
