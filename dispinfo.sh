@@ -90,6 +90,7 @@ fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/dc_cap" "Missing!"
 fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/dv_cap" "Missing!"
 fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/attr" "Missing!"
 fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/disp_cap" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/custom_mode" "Missing!"
 fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/preferred_mode" "Missing!"
 fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/hdr_cap" "Missing!"
 fancycat "/sys/module/am_vecm/parameters/hdr_mode" "Missing!"
@@ -125,6 +126,7 @@ fi
 
 
 fancycat "/storage/.kodi/userdata/disp_cap" "Unset by user!"
+fancycat "/storage/.kodi/userdata/disp_add" "Unset by user!"
 if [ "$1" != "-r" ]; then 
     fancycat "/flash/boot.ini"  "Missing!"
     fancycat "/flash/config.ini"  "Missing!"
