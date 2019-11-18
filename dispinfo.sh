@@ -76,7 +76,7 @@ wildcat()
 
 printf "CoreELEC Display Information...\n\n" > $OUTPUTFILE
 
-if [ "$1" != "-r" ]; then 
+if [ "$1" != "-r" ]; then
     fancycat "/etc/os-release" "Missing!"
     fancycat "/proc/device-tree/coreelec-dt-id" "Missing!"
     fancycat "/proc/device-tree/le-dt-id" "Missing!"
@@ -113,7 +113,7 @@ if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
                "videoplayer.useamcodecmpeg4" \
                "videoplayer.usedisplayasclock" \
                "videoscreen.whitelist" \
-               "lookandfeel.skin" 
+               "lookandfeel.skin"
     do
         printf "$tag: " >> $OUTPUTFILE
         value=$(cat /storage/.kodi/userdata/guisettings.xml |grep "\"$tag\"" |grep -o '>.*<' |sed -E 's/[<>]//g')
@@ -124,17 +124,16 @@ else
     printf " Missing!\n" >> $OUTPUTFILE
 fi
 
-
 fancycat "/storage/.kodi/userdata/disp_cap" "Unset by user!"
 fancycat "/storage/.kodi/userdata/disp_add" "Unset by user!"
-if [ "$1" != "-r" ]; then 
+if [ "$1" != "-r" ]; then
     fancycat "/flash/boot.ini"  "Missing!"
     fancycat "/flash/config.ini"  "Missing!"
     fancycat "/storage/.config/autostart.sh" "Unset by user!"
 fi
 
-if [ "$1" = "-l" ] || [ "$1" = "-r" ]; then                                                                   
-  cat $OUTPUTFILE                                                       
-else                              
-  paste $OUTPUTFILE                                                                
-fi      
+if [ "$1" = "-l" ] || [ "$1" = "-r" ]; then
+    cat $OUTPUTFILE
+else
+    paste $OUTPUTFILE
+fi

@@ -76,19 +76,20 @@ wildcat()
 
 printf "CoreELEC Audio Information...\n\n" > $OUTPUTFILE
 
-if [ "$1" != "-r" ]; then 
+if [ "$1" != "-r" ]; then
     fancycat "/etc/os-release" "Missing!"
     fancycat "/proc/device-tree/coreelec-dt-id" "Missing!"
     fancycat "/proc/device-tree/le-dt-id" "Missing!"
     fancycat "/proc/cmdline" "Missing!"
+    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing" "Missing!"
+    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/rawedid" "Missing!"
+    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/config" "Missing!"
 fi
-fancycat "/proc/device-tree/pinctrl@ff634480/spdifout/mux/groups" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/rawedid" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/config" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/aud_cap" "Missing!"
 
-    printf "------------ /sys/class/sound ------------" >> $OUTPUTFILE
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/aud_cap" "Missing!"
+fancycat "/proc/device-tree/pinctrl@ff634480/spdifout/mux/groups" "Missing!"
+
+printf "------------ /sys/class/sound ------------" >> $OUTPUTFILE
 if [ -d /sys/class/sound ]; then
     for soundcard in `ls -d /sys/class/sound/card*`
         do
@@ -125,7 +126,7 @@ else
     printf " Missing!\n" >> $OUTPUTFILE
 fi
 
-    printf "------------ kodi audio settings ------------" >> $OUTPUTFILE
+printf "------------ kodi audio settings ------------" >> $OUTPUTFILE
 if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
     printf "\n" >> $OUTPUTFILE
     for tag in "accessibility.audiohearing" \
@@ -180,12 +181,12 @@ fancycat "/storage/.config/sound.conf" "Unset by user!"
 fancycat "/storage/.config/asound.conf" "Unset by user!"
 fancycatdir "/storage/.config/pulse-daemon.conf.d" "*.conf" "Unset by user!"
 
-if [ "$1" != "-r" ]; then 
+if [ "$1" != "-r" ]; then
     fancycat "/storage/.config/autostart.sh" "Unset by user!"
 fi
 
-if [ "$1" = "-l" ] || [ "$1" = "-r" ]; then                                                                   
-  cat $OUTPUTFILE                                                       
-else                              
-  paste $OUTPUTFILE                                                                
-fi      
+if [ "$1" = "-l" ] || [ "$1" = "-r" ]; then
+    cat $OUTPUTFILE
+else
+    paste $OUTPUTFILE
+fi

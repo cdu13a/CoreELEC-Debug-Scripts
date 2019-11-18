@@ -83,15 +83,15 @@ fancycat "/flash/boot.ini"  "Missing!"
 fancycat "/flash/config.ini"  "Missing!"
 fancycat "/storage/.config/autostart.sh" "Unset by user!"
 printf "\n" >> $OUTPUTFILE
-fancycat "/storage/init-previous.log" "Missing!"        
+fancycat "/storage/init-previous.log" "Missing!"
 printf "\n" >> $OUTPUTFILE
 
 printf "------------ fw_printenv ------------\n" >> $OUTPUTFILE
 if [ -e /dev/env ]; then
-  fw_printenv >> $OUTPUTFILE
-  printf "\n" >> $OUTPUTFILE
+    fw_printenv >> $OUTPUTFILE
+    printf "\n" >> $OUTPUTFILE
 else
-  printf "Not found! || Not a TV Box?\n" >> $OUTPUTFILE
+    printf "Not found! || Not a TV Box?\n" >> $OUTPUTFILE
 fi
 printf "\n" >> $OUTPUTFILE
 
@@ -121,9 +121,8 @@ else
     audinfo -r >> $OUTPUTFILE
 fi
 
-
-if [ "$1" = "-l" ]; then                                                                   
-  cat $OUTPUTFILE                                                       
-else                              
-  paste $OUTPUTFILE                                                                
-fi      
+if [ "$1" = "-l" ]; then
+    cat $OUTPUTFILE
+else
+    paste $OUTPUTFILE
+fi

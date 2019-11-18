@@ -76,7 +76,7 @@ wildcat()
 
 printf "CoreELEC Remote Control Information...\n\n" > $OUTPUTFILE
 
-if [ "$1" != "-r" ]; then 
+if [ "$1" != "-r" ]; then
     fancycat "/etc/os-release" "Missing!"
     fancycat "/proc/device-tree/coreelec-dt-id" "Missing!"
     fancycat "/proc/device-tree/le-dt-id" "Missing!"
@@ -85,7 +85,6 @@ fi
 
 fancycat "/proc/device-tree/meson-ir/status" "Missing!"
 fancycat "/proc/device-tree/meson-remote/status" "Missing!"
-
 fancychk "/storage/.config/remote.disable"
 fancychk "/flash/remote.disable"
 fancycat "/storage/.config/remote.conf" "Unset by user!"
@@ -101,16 +100,21 @@ fancycat "/storage/.kodi/userdata/keyboard.xml" "Unset by user!"
 fancycatdir "/storage/.kodi/userdata/keymaps" "*.xml" "Unset by user!"
 
 printf "------------ BL301 ------------\n" >> $OUTPUTFILE
-checkbl301 -v >> $OUTPUTFILE
 
-if [ "$1" != "-r" ]; then 
+if [[ -x /usr/sbin/checkbl301 ]]; then
+  /usr/sbin/checkbl301 -v >> $OUTPUTFILE
+else
+  printf "checkbl301 not found!\n"
+fi
+
+if [ "$1" != "-r" ]; then
     fancycat "/flash/boot.ini" "Missing!"
     fancycat "/flash/config.ini" "Missing!"
     fancycat "/storage/.config/autostart.sh" "Unset by user!"
 fi
 
-if [ "$1" = "-l" ] || [ "$1" = "-r" ]; then                                                                   
-  cat $OUTPUTFILE                                                       
-else                              
-  paste $OUTPUTFILE                                                                
-fi      
+if [ "$1" = "-l" ] || [ "$1" = "-r" ]; then
+    cat $OUTPUTFILE
+else
+    paste $OUTPUTFILE
+fi
