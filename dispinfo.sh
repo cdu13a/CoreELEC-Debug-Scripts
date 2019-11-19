@@ -51,7 +51,7 @@ fancycatdir()
             fi
         done
     else
-        printf " Directory Missing!\n"
+        printf " Directory Not Found!\n"
     fi
 }
 
@@ -77,25 +77,25 @@ wildcat()
 printf "CoreELEC Display Information...\n\n" > $OUTPUTFILE
 
 if [ "$1" != "-r" ]; then
-    fancycat "/etc/os-release" "Missing!"
-    fancycat "/proc/device-tree/coreelec-dt-id" "Missing!"
-    fancycat "/proc/device-tree/le-dt-id" "Missing!"
-    fancycat "/proc/cmdline" "Missing!"
+    fancycat "/etc/os-release" "Not Found!"
+    fancycat "/proc/device-tree/coreelec-dt-id" "Not Found!"
+    fancycat "/proc/device-tree/le-dt-id" "Not Found!"
+    fancycat "/proc/cmdline" "Not Found!"
 fi
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/rawedid" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/config" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/dc_cap" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/dv_cap" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/attr" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/disp_cap" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/custom_mode" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/preferred_mode" "Missing!"
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/hdr_cap" "Missing!"
-fancycat "/sys/module/am_vecm/parameters/hdr_mode" "Missing!"
-fancycat "/sys/module/am_vecm/parameters/sdr_mode" "Missing!"
-fancycat "/sys/class/display/vinfo" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid" "Not Found!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing" "Not Found!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/rawedid" "Not Found!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/config" "Not Found!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/dc_cap" "Not Found!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/dv_cap" "Not Found!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/attr" "Not Found!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/disp_cap" "Not Found!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/custom_mode" "Not Found!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/preferred_mode" "Not Found!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/hdr_cap" "Not Found!"
+fancycat "/sys/module/am_vecm/parameters/hdr_mode" "Not Found!"
+fancycat "/sys/module/am_vecm/parameters/sdr_mode" "Not Found!"
+fancycat "/sys/class/display/vinfo" "Not Found!"
 
 printf "------------ kodi display settings ------------" >> $OUTPUTFILE
 if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
@@ -121,14 +121,14 @@ if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
         printf "\n" >> $OUTPUTFILE
     done
 else
-    printf " Missing!\n" >> $OUTPUTFILE
+    printf " Not Found!\n" >> $OUTPUTFILE
 fi
 
 fancycat "/storage/.kodi/userdata/disp_cap" "Unset by user!"
 fancycat "/storage/.kodi/userdata/disp_add" "Unset by user!"
 if [ "$1" != "-r" ]; then
-    fancycat "/flash/boot.ini"  "Missing!"
-    fancycat "/flash/config.ini"  "Missing!"
+    fancycat "/flash/boot.ini"  "Not Found!"
+    fancycat "/flash/config.ini"  "Not Found!"
     fancycat "/storage/.config/autostart.sh" "Unset by user!"
 fi
 

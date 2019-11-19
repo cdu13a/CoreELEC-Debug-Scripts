@@ -62,7 +62,7 @@ fancycatdir()
             fi
         done
     else
-        printf " Directory Missing!\n"
+        printf " Directory Not Found!\n"
     fi
 }
 
@@ -87,17 +87,17 @@ wildcat()
 
 printf "CoreELEC Debug Information...\n\n" > $OUTPUTFILE
 
-fancycat "/etc/os-release" "Missing!"
-fancycat "/proc/device-tree/coreelec-dt-id" "Missing!"
-fancycat "/proc/device-tree/le-dt-id" "Missing!"
-fancycat "/proc/cmdline" "Missing!"
-fancycat "/flash/boot.ini"  "Missing!"
-fancycat "/flash/config.ini"  "Missing!"
-fancycattail "/flash/cfgload" "-c +73" "Missing!"
-fancycattail "/flash/aml_autoscript" "-c +73" "Missing!"
+fancycat "/etc/os-release" "Not Found!"
+fancycat "/proc/device-tree/coreelec-dt-id" "Not Found!"
+fancycat "/proc/device-tree/le-dt-id" "Not Found!"
+fancycat "/proc/cmdline" "Not Found!"
+fancycat "/flash/boot.ini"  "Not Found!"
+fancycat "/flash/config.ini"  "Not Found!"
+fancycattail "/flash/cfgload" "-c +73" "Not Found!"
+fancycattail "/flash/aml_autoscript" "-c +73" "Not Found!"
 fancycat "/storage/.config/autostart.sh" "Unset by user!"
 printf "\n" >> $OUTPUTFILE
-fancycat "/storage/init-previous.log" "Missing!"
+fancycat "/storage/init-previous.log" "Not Found!"
 printf "\n" >> $OUTPUTFILE
 
 printf "------------ fw_printenv ------------\n" >> $OUTPUTFILE

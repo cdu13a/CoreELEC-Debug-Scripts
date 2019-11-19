@@ -51,7 +51,7 @@ fancycatdir()
             fi
         done
     else
-        printf " Directory Missing!\n"
+        printf " Directory Not Found!\n"
     fi
 }
 
@@ -77,17 +77,17 @@ wildcat()
 printf "CoreELEC Audio Information...\n\n" > $OUTPUTFILE
 
 if [ "$1" != "-r" ]; then
-    fancycat "/etc/os-release" "Missing!"
-    fancycat "/proc/device-tree/coreelec-dt-id" "Missing!"
-    fancycat "/proc/device-tree/le-dt-id" "Missing!"
-    fancycat "/proc/cmdline" "Missing!"
-    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing" "Missing!"
-    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/rawedid" "Missing!"
-    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/config" "Missing!"
+    fancycat "/etc/os-release" "Not Found!"
+    fancycat "/proc/device-tree/coreelec-dt-id" "Not Found!"
+    fancycat "/proc/device-tree/le-dt-id" "Not Found!"
+    fancycat "/proc/cmdline" "Not Found!"
+    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing" "Not Found!"
+    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/rawedid" "Not Found!"
+    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/config" "Not Found!"
 fi
 
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/aud_cap" "Missing!"
-fancycat "/proc/device-tree/pinctrl@ff634480/spdifout/mux/groups" "Missing!"
+fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/aud_cap" "Not Found!"
+fancycat "/proc/device-tree/pinctrl@ff634480/spdifout/mux/groups" "Not Found!"
 
 printf "------------ /sys/class/sound ------------" >> $OUTPUTFILE
 if [ -d /sys/class/sound ]; then
@@ -109,11 +109,11 @@ if [ -d /sys/class/sound ]; then
             fi
         done
 else
-    printf " Missing!\n" >> $OUTPUTFILE
+    printf " Not Found!\n" >> $OUTPUTFILE
 fi
 
-fancycat "/proc/asound/cards" "Missing!"
-fancycat "/proc/asound/pcm" "Missing!"
+fancycat "/proc/asound/cards" "Not Found!"
+fancycat "/proc/asound/pcm" "Not Found!"
 
 printf "------------ aplay ------------" >> $OUTPUTFILE
 if [ -x `which aplay` ]; then
@@ -123,7 +123,7 @@ if [ -x `which aplay` ]; then
     printf "------------ aplay -L ------------\n" >> $OUTPUTFILE
     aplay -L >> $OUTPUTFILE
 else
-    printf " Missing!\n" >> $OUTPUTFILE
+    printf " Not Found!\n" >> $OUTPUTFILE
 fi
 
 printf "------------ kodi audio settings ------------" >> $OUTPUTFILE
@@ -174,7 +174,7 @@ if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
     [ -n "$value" ] && printf "$value" >> $OUTPUTFILE
     printf "\n" >> $OUTPUTFILE
 else
-    printf " Missing!\n" >> $OUTPUTFILE
+    printf " Not Found!\n" >> $OUTPUTFILE
 fi
 
 fancycat "/storage/.config/sound.conf" "Unset by user!"

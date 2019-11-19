@@ -51,7 +51,7 @@ fancycatdir()
             fi
         done
     else
-        printf " Directory Missing!\n"
+        printf " Directory Not Found!\n"
     fi
 }
 
@@ -77,14 +77,14 @@ wildcat()
 printf "CoreELEC Remote Control Information...\n\n" > $OUTPUTFILE
 
 if [ "$1" != "-r" ]; then
-    fancycat "/etc/os-release" "Missing!"
-    fancycat "/proc/device-tree/coreelec-dt-id" "Missing!"
-    fancycat "/proc/device-tree/le-dt-id" "Missing!"
-    fancycat "/proc/cmdline" "Missing!"
+    fancycat "/etc/os-release" "Not Found!"
+    fancycat "/proc/device-tree/coreelec-dt-id" "Not Found!"
+    fancycat "/proc/device-tree/le-dt-id" "Not Found!"
+    fancycat "/proc/cmdline" "Not Found!"
 fi
 
-fancycat "/proc/device-tree/meson-ir/status" "Missing!"
-fancycat "/proc/device-tree/meson-remote/status" "Missing!"
+fancycat "/proc/device-tree/meson-ir/status" "Not Found!"
+fancycat "/proc/device-tree/meson-remote/status" "Not Found!"
 fancychk "/storage/.config/remote.disable"
 fancychk "/flash/remote.disable"
 fancycat "/storage/.config/remote.conf" "Unset by user!"
@@ -108,8 +108,8 @@ else
 fi
 
 if [ "$1" != "-r" ]; then
-    fancycat "/flash/boot.ini" "Missing!"
-    fancycat "/flash/config.ini" "Missing!"
+    fancycat "/flash/boot.ini" "Not Found!"
+    fancycat "/flash/config.ini" "Not Found!"
     fancycat "/storage/.config/autostart.sh" "Unset by user!"
 fi
 
