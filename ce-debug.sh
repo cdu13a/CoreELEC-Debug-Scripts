@@ -26,6 +26,18 @@ fancycat()
     fi
 }
 
+fancycattail()
+{
+# $1 = file $2 = options $3 = message if file not found
+    printf "------------ $1 ------------" >> $OUTPUTFILE
+    if [ -f $1 ]; then
+        printf "\n" >> $OUTPUTFILE
+        tail $2 $1 | tr '\000' '\n' >> $OUTPUTFILE
+    else
+        printf " $3\n" >> $OUTPUTFILE
+    fi
+}
+
 fancychk()
 {
    printf "------------ $1 ------------" >> $OUTPUTFILE
@@ -81,6 +93,8 @@ fancycat "/proc/device-tree/le-dt-id" "Missing!"
 fancycat "/proc/cmdline" "Missing!"
 fancycat "/flash/boot.ini"  "Missing!"
 fancycat "/flash/config.ini"  "Missing!"
+fancycattail "/flash/cfgload" "-c +73" "Missing!"
+fancycattail "/flash/aml_autoscript" "-c +73" "Missing!"
 fancycat "/storage/.config/autostart.sh" "Unset by user!"
 printf "\n" >> $OUTPUTFILE
 fancycat "/storage/init-previous.log" "Missing!"
