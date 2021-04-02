@@ -81,6 +81,16 @@ if [ "$1" != "-r" ]; then
     fancycat "/proc/cmdline" "Not Found!"
 fi
 
+fancycat "/sys/kernel/debug/cec/cec0/status" "Not Found!"
+fancycat "/sys/class/drm/card0-HDMI-A-1/status" "Not Found!"
+fancycat "/sys/kernel/debug/dma_buf/bufinfo" "Not Found!"
+fancycat "/sys/kernel/debug/dri/0/state" "Not Found!"
+
+printf "\n" >> $OUTPUTFILE
+printf "------------ /sys/class/drm/card0-HDMI-A-1/edid (raw)------------" >> $OUTPUTFILE
+printf "\n" >> $OUTPUTFILE
+hexdump -e '256/1 "%02x""\n"' /sys/class/drm/card0-HDMI-A-1/edid >> $OUTPUTFILE
+printf "\n" >> $OUTPUTFILE
 
 printf "------------ kodi display settings ------------" >> $OUTPUTFILE
 if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
