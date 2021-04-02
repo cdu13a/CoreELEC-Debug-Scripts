@@ -78,16 +78,8 @@ printf "CoreELEC Audio Information...\n\n" > $OUTPUTFILE
 
 if [ "$1" != "-r" ]; then
     fancycat "/etc/os-release" "Not Found!"
-    fancycat "/proc/device-tree/coreelec-dt-id" "Not Found!"
-    fancycat "/proc/device-tree/le-dt-id" "Not Found!"
     fancycat "/proc/cmdline" "Not Found!"
-    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/edid_parsing" "Not Found!"
-    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/rawedid" "Not Found!"
-    fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/config" "Not Found!"
 fi
-
-fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/aud_cap" "Not Found!"
-fancycat "/proc/device-tree/pinctrl@ff634480/spdifout/mux/groups" "Not Found!"
 
 printf "------------ /sys/class/sound ------------" >> $OUTPUTFILE
 if [ -d /sys/class/sound ]; then
@@ -148,9 +140,9 @@ if [ -f /storage/.kodi/userdata/guisettings.xml ]; then
                "audiooutput.passthroughdevice" \
                "audiooutput.processquality" \
                "audiooutput.samplerate" \
-               "audiooutput.audiooutput.stereoupmix" \
-               "audiooutput.audiooutput.streamnoise" \
-               "audiooutput.audiooutput.streamsilence" \
+               "audiooutput.stereoupmix" \
+               "audiooutput.streamnoise" \
+               "audiooutput.streamsilence" \
                "audiooutput.truehdpassthrough" \
                "audiooutput.volumesteps" \
                "musicplayer.replaygainavoidclipping" \

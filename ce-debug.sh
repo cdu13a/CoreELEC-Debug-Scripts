@@ -88,27 +88,10 @@ wildcat()
 printf "CoreELEC Debug Information...\n\n" > $OUTPUTFILE
 
 fancycat "/etc/os-release" "Not Found!"
-fancycat "/proc/device-tree/coreelec-dt-id" "Not Found!"
-fancycat "/proc/device-tree/le-dt-id" "Not Found!"
 fancycat "/proc/cmdline" "Not Found!"
 fancycat "/storage/.config/boot.hint" "Not Found!"
 fancycat "/storage/.config/boot.status" "Not Found!"
-fancycat "/flash/boot.ini"  "Not Found!"
-fancycat "/flash/config.ini"  "Not Found!"
-fancycattail "/flash/cfgload" "-c +73" "Not Found!"
-fancycattail "/flash/aml_autoscript" "-c +73" "Not Found!"
 fancycat "/storage/.config/autostart.sh" "Unset by user!"
-printf "\n" >> $OUTPUTFILE
-fancycat "/storage/init-previous.log" "Not Found!"
-printf "\n" >> $OUTPUTFILE
-
-printf "------------ fw_printenv ------------\n" >> $OUTPUTFILE
-if [ -e /dev/env ]; then
-    fw_printenv >> $OUTPUTFILE
-    printf "\n" >> $OUTPUTFILE
-else
-    printf "Not found! || Not a TV Box?\n" >> $OUTPUTFILE
-fi
 printf "\n" >> $OUTPUTFILE
 
 printf "------------ lsmod ------------\n" >> $OUTPUTFILE
