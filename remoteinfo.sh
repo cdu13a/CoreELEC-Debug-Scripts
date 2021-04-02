@@ -81,6 +81,10 @@ if [ "$1" != "-r" ]; then
     fancycat "/proc/cmdline" "Not Found!"
 fi
 
+IRDTLOC=$(cat "/proc/device-tree/__symbols__/ir")
+fancycat "/proc/device-tree$IRDTLOC/status" "Not Found!"
+fancycat "/proc/device-tree$IRDTLOC/linux,rc-map-name" "Not Found!"
+
 fancycat "/storage/.config/lircd.conf" "Unset by user!"
 fancycat "/storage/.config/lirc_options.conf" "Unset by user!"
 fancycat "/storage/.config/rc_maps.cfg" "Unset by user!"
