@@ -128,6 +128,7 @@ fi
 
 fancycat "/storage/.kodi/userdata/disp_cap" "Unset by user!"
 fancycat "/storage/.kodi/userdata/disp_add" "Unset by user!"
+fancycat "/flash/resolution.ini"  "Not Found!"
 if [ "$1" != "-r" ]; then
     fancycat "/flash/boot.ini"  "Not Found!"
     fancycat "/flash/config.ini"  "Not Found!"
