@@ -97,6 +97,8 @@ fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/preferred_mode" "Not Found!"
 fancycat "/sys/devices/virtual/amhdmitx/amhdmitx0/hdr_cap" "Not Found!"
 fancycat "/sys/module/am_vecm/parameters/hdr_mode" "Not Found!"
 fancycat "/sys/module/am_vecm/parameters/sdr_mode" "Not Found!"
+fancycat "/sys/module/am_vecm/parameters/video_process_status" "Not Found!"
+fancycat "/sys/module/am_vecm/parameters/hdr_policy" "Not Found!"
 fancycat "/sys/class/display/vinfo" "Not Found!"
 
 printf "------------ kodi display settings ------------" >> $OUTPUTFILE
